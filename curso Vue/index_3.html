@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Curso Vue.js</title>
+</head>
+<body>
+
+<!-- Componentes  -->
+<div id="app">
+
+    <form @submit.prevent="submit" action="" method="get">
+    	<h2>¿Cuales son tus cursos favoritos?</h2>
+    	<!-- el v-for funciona como un foreach -->
+    	<template v-for="curso in cursos">
+
+    	<!-- Aqui esta el componente y "curso" es una variable igual al curso de arriba en for 
+    		con checked selecCurso revisamos el estado del checkbox
+    		ambos son parametros que vamos a enviar al componente -->
+        <curso :curso="curso" @checked="selectCurso"></curso>
+
+       <!--  <input v-model="cursos_seleccionados" type="checkbox" v-bind:id="curso.value" v-bind:value="curso.value">
+    	<label v-bind:for="curso.value"> {{ curso.nombre }}</label>
+ -->
+    	</template>
+
+    	<button type="submit" >Enviar</button>
+    </form>
+ </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+//declarativo, es decirle que en vez de como
+//evento hijo
+//le vamos a decir como queremos que ese componente aparesca en pantalla
+	Vue.component('curso', {
+		// props son las propiedades del componente, aqui le pasamos la variable curso que es curso.value
+		// son las propiedades que necesita para dibujarse
+		props:['curso'],
+		methods: {
+			onchange: function (ev){
+				//recibe el evento del checkbox
+				//recibe el  nombre del evento, parametrosy si el valor esta checkeado o no(true o false) 
+					this.$emit('checked', this.curso.value, ev.target.checked)
+				}
+		},
+		// para poner diferentes lineas en un string es con comilla invertida `` AltGr + }
+		template: `
+		<div>
+		<input  type="checkbox" v-bind:id="curso.value" v-bind:value="curso.value" @change="onchange">
+    	<label v-bind:for="curso.value"> {{ curso.nombre }}</label>
+		</div>`
+	})
+
+// evento padre
+	 let app = new Vue({
+	 	el: '#app',
+	 	data: {
+	 		
+	 		cursos: [
+	 		{ nombre: 'Curso de Vue',
+	 	       value: 'vue'},
+
+	 	    { nombre: 'Curso de SEO',
+	 	       value: 'seo'},
+	 	       
+	 	    { nombre: 'Curso de REACT',
+	 	       value: 'react'},
+	 	    
+	 	    { nombre: 'Curso de MARKETING',
+	 	       value: 'growth'}       
+	 		],
+	 		cursosSeleccionados: []
+	 	  },
+
+	 	methods: {
+	 		submit: function(){
+	 			console.log("Se ejecuta el moetodo submit")
+	 			console.log(this.cursosSeleccionados)
+	 		},
+	 		//en este metodo se agregar o se quitan valores del array. dependiendo del checkbox
+	 		// selecionado
+	 		selectCurso: function(curso,checked){
+	 			// si fue checkeado o seleccionado, agregamos al array el valor de curso
+	 			if(checked){
+	 				this.cursosSeleccionados.push(curso)
+	 			} else {
+	 				// cual es el indice del curso
+	 				let index = this.cursosSeleccionados.indexOf(curso)
+	 				// el 1 significa que apartir de esa posision se le quita uno del array
+	 				this.cursosSeleccionados.splice(index, 1)
+	 			}
+
+	 	   }
+	 	}
+	 	
+	 })
+</script>
+</body>
+</html>

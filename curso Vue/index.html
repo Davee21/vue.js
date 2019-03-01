@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Curso Vue.js</title>
+</head>
+<body>
+<!-- v-if="variable" es un condicionador, y se le debe mandar una variable que debe contener TRUE o FALSE 
+el v-if destruye los elementos -->
+<!-- v-if vs v-show -->
+<!-- v-show="mostrar" esto funciona con los atributos de css display:none
+     v-show="!mostrar" -->
+<!-- v-if con tamplates y cualquier otro elemento con v-show, v-show es mas facil para el navegador  -->
+
+<!-- se debe encapsular las etiquetas para un mejor manejo, ejemplo <div> o <template> -->
+
+<div id="app">
+	<!-- {{}} son parametros y lo de adentro son variables -->
+
+	<!-- Los filtros: que el texto se muestre en mayusculas o todo en misnisculas -->
+	<!-- podemos concatenar los filtros simplememnte con |  -->
+	<h1 >{{ titulo | uppercase}}</h1>
+	<h2 >{{ subtitulo | capitalize  }}</h2>
+ </div>
+
+<!-- v-bind:href="url"  se usa para poner variables dentro de una etiqueta-->
+<!-- :href="url"  esto es lo mismo pero abreviado -->
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+	// creamos una nueva variable y le asignamos un nuevo objeto view
+	 let app = new Vue({
+	 	// el objeto Vue debe recibir parametros tipo json
+	 	el: '#app',
+	 	data: {
+	 		// aqui vienen las variables que pusimos en los parametros {{}}
+	 		titulo:"estas en platzi",
+	 		subtitulo: "Estas viendo un Curso"
+	 	},
+
+	 	//se hacen en otro objeto, 
+	 	filters:{
+	 		// atributoy recibe una funcion anonima y recibe un string que seria el titulo
+	 		// y tenemos que devolver algo... con return, en return podemos hacer lo que sea
+	 		uppercase: function(str){return str.toUpperCase()},
+	 		lowercase: function(str){return str.toLowerCase()},
+	 		capitalize: function(str){return str.charAt(0).toUpperCase() + str.slice(1);}
+	 		// toUpperCase chartAt slice son funciones de javascript
+	 	}
+	 })
+</script>
+</body>
+
+</html>
